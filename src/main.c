@@ -48,10 +48,10 @@ main(int argc, char *argv[])
 		temp = 6500;
 
     double brightness = 1.0;
-    if (argc > 2)
-			brightness = atof(argv[2]);
+	if (argc > 2)
+		brightness = atof(argv[2]);
 	if (brightness < 0.1 || brightness > 1.0)
-			brightness = 1.0;
+		brightness = 1.0;
 
 	temp -= 1000;
 	double ratio = temp % 500 / 500.0;
