@@ -12,7 +12,7 @@ amount of dependencies required to run it.
 ## Usage
 
 ```
-./colt T B
+./colt -t T -b B
 ```
 
 where `T` is a value for temperature (K) between 1000 and 10000 (default 6500)
