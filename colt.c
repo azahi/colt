@@ -48,11 +48,9 @@ main(int argc, char *argv[])
 		{
 			case 't':
 				temp = strtol(optarg, NULL, 10);
-				fprintf(stderr, "%d\n", temp);
 				break;
 			case 'b':
 				bright = strtod(optarg, NULL);
-				fprintf(stderr, "%f\n", bright);
 				break;
 			default:
 				fprintf(stderr, "Usage: %s [-t temperature] [-b brightness]\n", argv[0]);
