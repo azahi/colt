@@ -1,5 +1,7 @@
 #include <X11/extensions/Xrandr.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
 
 static const struct
 {
@@ -36,28 +38,44 @@ shift[] =
 int
 main(int argc, char *argv[])
 {
+	int temp = 6500;
+	double bright = 1.0;
+
+	int opt;
+	while ((opt = getopt(argc, argv, "t:b:hv")) != -1)
+	{
+		switch (opt)
+		{
+			case 't':
+				temp = strtol(optarg, NULL, 10);
+				fprintf(stderr, "%d\n", temp);
+				break;
+			case 'b':
+				bright = strtod(optarg, NULL);
+				fprintf(stderr, "%f\n", bright);
+				break;
+			default:
+				fprintf(stderr, "Usage: %s [-t temperature] [-b brightness]\n", argv[0]);
+				exit(EXIT_FAILURE);
+		}
+	}
+
 	Display *dpy = XOpenDisplay(NULL);
 	int scr = DefaultScreen(dpy);
 	Window win = RootWindow(dpy, scr);
 	XRRScreenResources *res = XRRGetScreenResourcesCurrent(dpy, win);
 
-	int temp = 6500;
-	if (argc > 1)
-		temp = atoi(argv[1]);
 	if (temp < 1000 || temp > 10000)
 		temp = 6500;
 
-    double brightness = 1.0;
-	if (argc > 2)
-		brightness = atof(argv[2]);
-	if (brightness < 0.1 || brightness > 1.0)
-		brightness = 1.0;
+	if (bright < 0.1 || bright > 1.0)
+		bright = 1.0;
 
 	temp -= 1000;
 	double ratio = temp % 500 / 500.0;
-	double gammar = brightness * (AVG(r));
-	double gammag = brightness * (AVG(g));
-	double gammab = brightness * (AVG(b));
+	double gammar = bright * (AVG(r));
+	double gammag = bright * (AVG(g));
+	double gammab = bright * (AVG(b));
 
 	for (int i = 0; i < res->ncrtc; i++)
 	{
@@ -80,4 +98,6 @@ main(int argc, char *argv[])
 
 	XRRFreeScreenResources(res);
 	XCloseDisplay(dpy);
+
+	exit(EXIT_SUCCESS);
 }
